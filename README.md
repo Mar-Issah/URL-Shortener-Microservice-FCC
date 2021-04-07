@@ -1,5 +1,5 @@
 # URL Shortener Microservice
-An FreeCodeCamp API Microservice project to demonstrate my skills in Node.js/ Express and MongoDb
+A FreeCodeCamp API and Microservices project to demonstrate my skills in Node.js/ Express and MongoDb
 
 ## About The Project
 
