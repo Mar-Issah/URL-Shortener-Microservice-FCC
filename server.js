@@ -56,21 +56,24 @@ app.post("/api/shorturl/new", urlencodedParser, (req, res) => {
       }
 
     //first find if the url exist if yes modify the existing one else create a new one
-      if (!error) {
-        Url.findOneAndUpdate(
-          { originalUrl: formUrl },
-          { originalUrl: formUrl, shortUrl: shortCode },
-          { new: true, upsert: true },
-          (error, savedUrl) => {
-            if (!error) {
-              responseObject["short_url"] = savedUrl.shortUrl;
-              res.json(responseObject);
-            }
-          }
-        );
+  if (!error) {
+    Url.findOneAndUpdate(
+      { originalUrl: formUrl },
+      { originalUrl: formUrl, shortUrl: shortCode },
+      { new: true, upsert: true },
+      (error, savedUrl) => {
+        if (!error) {
+          // Include the full short URL in the response
+          responseObject["short_url"] = savedUrl.shortUrl;
+          responseObject["full_short_url"] = `${req.protocol}://${req.get("host")}/api/shorturl/${savedUrl.shortUrl}`;
+          res.json(responseObject);
+        }
       }
+    );
+  }
     });
 });
+
 
 //once the shortcode is create you can use the code as an endpoint which will redirect you to the original url page
 app.get("/api/shorturl/:number", (req, res) => {
